@@ -20,6 +20,7 @@ The E-Commerce API is a backend service built using NestJS and PostgreSQL to man
 ## Tech Stack
 
 - **Backend**: Node.js, NestJS
+- **ORM**:Typeorm
 - **API Documentation**: Swagger
 - **Database**: PostgreSQL
 - **Containerization**: Docker, Docker Compose
