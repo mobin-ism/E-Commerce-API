@@ -12,8 +12,6 @@ An E commerce application built with Node.js (v22.11.0), NestJS and Postgres. Th
     - [Local Deployment](#local-deployment)
 - [Environment Variables](#environment-variables)
 - [API Endpoints](#api-endpoints)
-- [Database Schema](#database-schema)
-- [Future Enhancements](#future-enhancements)
 
 ---
 
