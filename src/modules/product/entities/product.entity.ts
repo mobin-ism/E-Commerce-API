@@ -34,10 +34,10 @@ export class Product extends CustomBaseEntity {
     quantity: number
 
     @Column({
-        type: 'int',
+        type: 'string',
         nullable: true
     })
-    categoryId: number
+    categoryId: string
 
     @ManyToOne(() => Category, (category) => category.products, {
         onDelete: 'CASCADE'
