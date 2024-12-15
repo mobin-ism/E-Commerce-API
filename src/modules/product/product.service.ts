@@ -5,7 +5,7 @@ import {
     Pagination,
     paginate
 } from 'nestjs-typeorm-paginate'
-import { FindOptionsOrder, ILike, Repository } from 'typeorm'
+import { EntityManager, FindOptionsOrder, ILike, Repository } from 'typeorm'
 import { CategoryService } from '../category/category.service'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
@@ -69,6 +69,34 @@ export class ProductService {
         if (!product) {
             throw new HttpException(
                 `Product with ID ${id} does not exist`,
+                HttpStatus.NOT_FOUND
+            )
+        }
+
+        return product
+    }
+
+    /**
+     * Find a product with pessimistic write lock
+     * @param productId
+     * @param transactionalEntityManager
+     * @returns
+     */
+    async findOneWithPessimisticLock(
+        productId: string,
+        transactionalEntityManager?: EntityManager
+    ) {
+        const manager =
+            transactionalEntityManager || this.productRepository.manager
+
+        const product = manager.findOne(Product, {
+            where: { id: productId },
+            lock: { mode: 'pessimistic_write' }
+        })
+
+        if (!product) {
+            throw new HttpException(
+                `Product with ID ${productId} not found`,
                 HttpStatus.NOT_FOUND
             )
         }
@@ -176,5 +204,38 @@ export class ProductService {
                 category: true
             }
         })
+    }
+
+    /**
+     * Update stock
+     * @param productId
+     * @param quantityChange
+     * @param transactionalEntityManager
+     * @returns
+     */
+    async updateStock(
+        productId: string,
+        quantityChange: number,
+        transactionalEntityManager?: EntityManager
+    ) {
+        const manager =
+            transactionalEntityManager || this.productRepository.manager
+
+        // Find the product
+        const product = await manager.findOne(Product, {
+            where: { id: productId }
+        })
+
+        if (!product) {
+            throw new HttpException(
+                `Product with ID ${productId} not found`,
+                HttpStatus.NOT_FOUND
+            )
+        }
+
+        // Update stock
+        product.quantity += quantityChange
+
+        return manager.save(product)
     }
 }

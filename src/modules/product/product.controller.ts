@@ -88,7 +88,7 @@ export class ProductController {
             {
                 page,
                 limit,
-                route: process.env.APP_URL + '/api/product'
+                route: process.env.APP_URL + '/api/v1/product'
             },
             search,
             category,
@@ -102,11 +102,6 @@ export class ProductController {
             result: result.items,
             meta: result.meta,
             links: result.links
-        }
-        return {
-            statusCode: HttpStatus.OK,
-            message: 'List of products',
-            result: await this.productService.findAll()
         }
     }
 

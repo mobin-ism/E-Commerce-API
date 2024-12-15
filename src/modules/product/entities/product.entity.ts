@@ -1,6 +1,7 @@
 import { CustomBaseEntity } from 'src/common/entity/custom-base.entity'
 import { Category } from 'src/modules/category/entities/category.entity'
-import { Column, Entity, ManyToOne } from 'typeorm'
+import { OrderedProduct } from 'src/modules/order/entities/ordered-product.entity'
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
 
 @Entity()
 export class Product extends CustomBaseEntity {
@@ -43,4 +44,13 @@ export class Product extends CustomBaseEntity {
         onDelete: 'CASCADE'
     })
     category: Category
+
+    @OneToMany(
+        () => OrderedProduct,
+        (orderedProduct) => orderedProduct.product,
+        {
+            cascade: true
+        }
+    )
+    orderedProducts: OrderedProduct[]
 }
