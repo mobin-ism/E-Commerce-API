@@ -59,7 +59,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const { method, url } = request
         const errorLog = `Response Code: ${statusCode} - Method: ${method} - URL: ${url}\n\n
       ${JSON.stringify(errorResponse)}\n\n
-      User: ${JSON.stringify(request.user ?? 'Not signed in')}\n\n
       ${exception instanceof HttpException ? exception.stack : error}\n\n`
         return errorLog
     }
