@@ -109,14 +109,14 @@ e-commerce-api/
 
 4. **Install dependencies and run services**:
 
-    - **Backend**:
-        ```bash
-        yarn
-        yarn start:prod
-        ```
+```bash
+    yarn
+    yarn build
+    yarn start:prod
+```
 
 5. **Access the application**:
-    - **API**: [http://localhost:3000/docs](http://localhost:3000/docs)
+    - **API Documentation**: [http://localhost:3000/docs](http://localhost:3000/docs)
 
 ---
 
