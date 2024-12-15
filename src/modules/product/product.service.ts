@@ -1,11 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import {
+    IPaginationOptions,
+    Pagination,
+    paginate
+} from 'nestjs-typeorm-paginate'
+import { FindOptionsOrder, ILike, Repository } from 'typeorm'
 import { CategoryService } from '../category/category.service'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 import { Product } from './entities/product.entity'
-
 @Injectable()
 export class ProductService {
     constructor(
@@ -22,17 +26,9 @@ export class ProductService {
     async create(createProductDto: CreateProductDto) {
         // Check if category exists
         if (createProductDto.categoryId) {
-            const category = await this.categoryService.findOne(
-                createProductDto.categoryId
-            )
-
-            if (!category) {
-                throw new HttpException(
-                    `Category with ID ${createProductDto.categoryId} does not exist`,
-                    HttpStatus.NOT_FOUND
-                )
-            }
+            await this.categoryService.findOne(createProductDto.categoryId)
         }
+
         try {
             const aboutToCreateProduct =
                 this.productRepository.create(createProductDto)
@@ -89,16 +85,7 @@ export class ProductService {
     async update(id: string, updateProductDto: UpdateProductDto) {
         // Check if category exists
         if (updateProductDto.categoryId) {
-            const category = await this.categoryService.findOne(
-                updateProductDto.categoryId
-            )
-
-            if (!category) {
-                throw new HttpException(
-                    `Category with ID ${updateProductDto.categoryId} does not exist`,
-                    HttpStatus.NOT_FOUND
-                )
-            }
+            await this.categoryService.findOne(updateProductDto.categoryId)
         }
 
         try {
@@ -146,5 +133,48 @@ export class ProductService {
                 HttpStatus.BAD_REQUEST
             )
         }
+    }
+
+    /**
+     * Paginated products with search and ordering
+     * @param options
+     * @param search
+     * @param category
+     * @param orderBy
+     * @param desc
+     * @returns
+     */
+    async paginate(
+        options: IPaginationOptions,
+        search: string,
+        category: string,
+        orderBy: string,
+        desc: boolean
+    ): Promise<Pagination<Product>> {
+        const orderByQueries = ['name', 'createdAt']
+        if (orderByQueries.indexOf(orderBy) === -1) {
+            orderBy = 'createdAt'
+        }
+
+        const orderByCondition: FindOptionsOrder<Product> = {
+            [orderBy]: desc ? 'DESC' : 'ASC'
+        }
+
+        let categoryCondition = {}
+        if (category != '') {
+            categoryCondition = {
+                name: ILike(category.toLowerCase())
+            }
+        }
+        return paginate<Product>(this.productRepository, options, {
+            where: {
+                name: ILike(`%${search.toLowerCase()}%`),
+                category: categoryCondition
+            },
+            order: orderByCondition,
+            relations: {
+                category: true
+            }
+        })
     }
 }

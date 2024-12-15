@@ -48,7 +48,10 @@ export class CategoryService {
             where: { id }
         })
         if (!category) {
-            throw new HttpException('Category not found', HttpStatus.NOT_FOUND)
+            throw new HttpException(
+                `Category with ID ${id} does not exist`,
+                HttpStatus.NOT_FOUND
+            )
         }
         return category
     }
@@ -64,7 +67,10 @@ export class CategoryService {
             where: { id }
         })
         if (!category) {
-            throw new HttpException('Category not found', HttpStatus.NOT_FOUND)
+            throw new HttpException(
+                `Category with ID ${id} does not exist`,
+                HttpStatus.NOT_FOUND
+            )
         }
 
         try {
@@ -88,7 +94,10 @@ export class CategoryService {
             where: { id }
         })
         if (!category) {
-            throw new HttpException('Category not found', HttpStatus.NOT_FOUND)
+            throw new HttpException(
+                `Category with ID ${id} does not exist`,
+                HttpStatus.NOT_FOUND
+            )
         }
 
         try {

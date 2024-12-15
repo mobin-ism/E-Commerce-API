@@ -4,10 +4,9 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { ThrottlerModule } from '@nestjs/throttler'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { typeOrmAsyncConfig } from 'src/config/typeorm.config'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-import { ProductModule } from './modules/product/product.module';
-import { CategoryModule } from './modules/category/category.module';
+import { CategoryModule } from './modules/category/category.module'
+import { OrderModule } from './modules/order/order.module'
+import { ProductModule } from './modules/product/product.module'
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -33,10 +32,9 @@ import { CategoryModule } from './modules/category/category.module';
         TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
         ScheduleModule.forRoot(),
         ProductModule,
-        CategoryModule
+        CategoryModule,
+        OrderModule
     ],
-    controllers: [AppController],
-    providers: [AppService],
     exports: [TypeOrmModule]
 })
 export class AppModule {}

@@ -1,14 +1,18 @@
 import {
     Body,
     Controller,
+    DefaultValuePipe,
     Delete,
     Get,
     HttpStatus,
     Param,
+    ParseBoolPipe,
+    ParseIntPipe,
     Patch,
-    Post
+    Post,
+    Query
 } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 import { ProductService } from './product.service'
@@ -40,7 +44,65 @@ export class ProductController {
     @Get()
     @ApiOperation({ summary: 'Get all products' })
     @ApiResponse({ description: 'Products found', status: HttpStatus.OK })
-    async findAll() {
+    @ApiQuery({
+        name: 'page',
+        required: false,
+        type: Number,
+        description: 'Page number'
+    })
+    @ApiQuery({
+        name: 'limit',
+        required: false,
+        type: Number,
+        description: 'Number of items per page'
+    })
+    @ApiQuery({
+        name: 'search',
+        required: false,
+        type: String,
+        description: 'Search by product name. Its a wildcard search'
+    })
+    @ApiQuery({
+        name: 'category',
+        required: false,
+        type: String,
+        description: 'Filter by category name.'
+    })
+    async findAll(
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+        @Query('limit') limit: number,
+        @Query('search', new DefaultValuePipe('')) search = '',
+        @Query('category', new DefaultValuePipe('')) category = '',
+        @Query('orderBy', new DefaultValuePipe('createdAt'))
+        orderBy = 'createdAt',
+        @Query('desc', new DefaultValuePipe(true), ParseBoolPipe)
+        desc = true
+    ) {
+        limit = limit
+            ? limit > parseInt(process.env.DEFAULT_PAGE_SIZE)
+                ? parseInt(process.env.DEFAULT_PAGE_SIZE)
+                : limit
+            : parseInt(process.env.DEFAULT_PAGE_SIZE)
+
+        const result = await this.productService.paginate(
+            {
+                page,
+                limit,
+                route: process.env.APP_URL + '/api/product'
+            },
+            search,
+            category,
+            orderBy,
+            desc
+        )
+
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'Data found',
+            result: result.items,
+            meta: result.meta,
+            links: result.links
+        }
         return {
             statusCode: HttpStatus.OK,
             message: 'List of products',
