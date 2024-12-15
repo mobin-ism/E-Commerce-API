@@ -6,8 +6,6 @@ An advanced Todo application built with Node.js (v22.11.0), NestJS and Postgres.
 
 ## Table of Contents
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Setup and Installation](#setup-and-installation)
     - [Docker Deployment](#docker-deployment)
@@ -16,47 +14,6 @@ An advanced Todo application built with Node.js (v22.11.0), NestJS and Postgres.
 - [API Endpoints](#api-endpoints)
 - [Database Schema](#database-schema)
 - [Future Enhancements](#future-enhancements)
-
----
-
-## Features
-
-### Frontend
-
-- Comprehensive task management: Create, update, display, and delete tasks.
-- Mark tasks as completed to track progress effectively.
-- Categorize tasks for better organization and prioritization.
-- Advanced sorting options: Sort tasks by priority or due date.
-- Searching specific task.
-- Secure user authentication using JSON Web Tokens (JWT).
-- Intuitive UI styling to clearly distinguish between completed and pending tasks.
-- Paginated task lists for enhanced navigation and usability.
-- User-defined custom categories for personalized task organization.
-- Flexible pagination settings: Customize the number of tasks displayed per page.
-
-### Backend
-
-- RESTful APIs for efficient management of tasks, categories, and user data.
-- JSON Web Token (JWT) based authentication ensuring secure user sessions.
-- Comprehensive data validation to maintain application integrity and prevent errors.
-- Well-defined MongoDB schemas to structure and store data effectively.
-- Dockerization of the application for consistent and portable deployment.
-
-### Database
-
-- Schemas for tasks, categories, and users.
-- User-specific tasks and categories.
-- Secure storage of sensitive user data.
-
----
-
-## Tech Stack
-
-- **Frontend**: React, Vite, Tailwind CSS, Nginx
-- **Backend**: Node.js, Express
-- **API Documentation**: Swagger
-- **Database**: MongoDB
-- **Containerization**: Docker, Docker Compose
 
 ---
 
