@@ -1,6 +1,6 @@
 # E Commerce API
 
-An advanced Todo application built with Node.js (v22.11.0), NestJS and Postgres. This app allows users to manage products across different categories and allows users to mange orders.
+An E commerce application built with Node.js (v22.11.0), NestJS and Postgres. This app allows users to manage products across different categories and allows users to mange orders.
 
 ---
 
