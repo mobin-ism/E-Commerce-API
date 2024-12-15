@@ -74,7 +74,7 @@ e-commerce-api/
 4. **Database Creation**:
 
     - If you see `Unable to connect to the database` error, then you need to create a database manually by any datbase client or using your terminal.
-      Please make sure that you are using valid database credentials while creating the database:
+      Please make sure that you are using exactly identical database credentials like showing below while creating the database:
 
     ```bash
     DB_HOST=postgres
