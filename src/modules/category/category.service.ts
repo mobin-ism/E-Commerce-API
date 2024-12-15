@@ -63,15 +63,10 @@ export class CategoryService {
      * @returns
      */
     async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-        const category = await this.categoryRepository.findOne({
+        // Check if the category exists
+        await this.categoryRepository.findOne({
             where: { id }
         })
-        if (!category) {
-            throw new HttpException(
-                `Category with ID ${id} does not exist`,
-                HttpStatus.NOT_FOUND
-            )
-        }
 
         try {
             await this.categoryRepository.update(id, updateCategoryDto)
@@ -90,15 +85,10 @@ export class CategoryService {
      * @returns
      */
     async remove(id: string) {
+        // Check if the category exists
         const category = await this.categoryRepository.findOne({
             where: { id }
         })
-        if (!category) {
-            throw new HttpException(
-                `Category with ID ${id} does not exist`,
-                HttpStatus.NOT_FOUND
-            )
-        }
 
         try {
             await this.categoryRepository.softDelete(id)

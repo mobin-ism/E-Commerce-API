@@ -111,6 +111,9 @@ export class ProductService {
      * @returns
      */
     async update(id: string, updateProductDto: UpdateProductDto) {
+        // Check if the product exists
+        await this.findOne(id)
+
         // Check if category exists
         if (updateProductDto.categoryId) {
             await this.categoryService.findOne(updateProductDto.categoryId)
@@ -138,12 +141,7 @@ export class ProductService {
      * @returns
      */
     async remove(id: string) {
-        const product = await this.productRepository.findOne({
-            where: { id },
-            relations: {
-                category: true
-            }
-        })
+        const product = await this.findOne(id)
 
         if (!product) {
             throw new HttpException(
